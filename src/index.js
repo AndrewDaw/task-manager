@@ -2,12 +2,31 @@ const express = require('express')
 require('./db/mongoose')
 const userRouter = require('./routers/user')
 const taskRouter = require('./routers/task')
+const maintenance = false
+
 
 const app = express()
 const port = process.env.PORT || 3000
 
-app.use(express.json())
+// app.use( (req, res, next) => {
+//     const authenticated = true
+//     if (req.method === 'GET'){
+//         res.send('You need to be logged in')
+//     } else {
+//         next()
+//     }
+// } )
 
+app.use( (req, res, next) => {
+    if (maintenance) {
+        res.status(503).send("Server currently under maintenance, try again later")
+    }else {
+        next()
+    }
+})
+
+
+app.use(express.json())
 app.use(userRouter)
 app.use(taskRouter)
 
