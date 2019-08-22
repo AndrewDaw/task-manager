@@ -32,9 +32,22 @@ app.use(taskRouter)
 
 
 app.listen(port, () => {
-    
     console.log('sever is up on port '+ port)
 })
+
+const pet = {
+    name: 'Puss in boots',
+    password: 'how it do'
+}
+
+pet.toJSON = function () {
+    delete this.password
+    return this
+}
+
+console.log(JSON.stringify(pet))
+
+
 
 // const jwt = require('jsonwebtoken')
 
