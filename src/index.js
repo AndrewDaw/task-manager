@@ -35,17 +35,53 @@ app.listen(port, () => {
     console.log('sever is up on port '+ port)
 })
 
-const pet = {
-    name: 'Puss in boots',
-    password: 'how it do'
+
+const User = require('./models/user')
+const main = async () => {
+    const user = await User.findById('5d61c4571089e9377054e8e0')
+    await user.populate('tasks').execPopulate()
+    console.log(user.tasks)
 }
 
-pet.toJSON = function () {
-    delete this.password
-    return this
-}
+main()
 
-console.log(JSON.stringify(pet))
+
+
+
+
+
+
+
+
+// const Task = require ('./models/task')
+
+// const main = async () => {
+//     const task = await Task.findById('5d61c4671089e9377054e8e2')
+//     await task.populate('owner').execPopulate()
+//     console.log(task.owner)
+// }
+
+// main()
+
+
+
+
+
+
+
+
+
+// const pet = {
+//     name: 'Puss in boots',
+//     password: 'how it do'
+// }
+
+// pet.toJSON = function () {
+//     delete this.password
+//     return this
+// }
+
+// console.log(JSON.stringify(pet))
 
 
 
