@@ -21,13 +21,28 @@ router.post('/tasks', auth, async (req, res) => {
 })
 
 router.get('/tasks', auth, async (req, res) => {
-
     try {
-        const tasks = await Task.find({owner: req.user._id})
-        if(!tasks){
-            res.status(404).send()
+        if(req.query.completed){
+            const tasks = await Task.find({owner: req.user._id, completed: req.query.completed})
+            .limit(parseInt(req.query.limit))
+            .skip(parseInt(req.query.skip))
+            if(!tasks){
+                res.status(404).send()
+            }
+            res.send(tasks)
+        }else{
+            const tasks = await Task.find({owner: req.user._id})
+            .limit(parseInt(req.query.limit))
+            .skip(parseInt(req.query.skip))
+            if(!tasks){
+                res.status(404).send()
+            }
+            res.send(tasks)
+            
         }
-        res.send(tasks)
+        
+       
+        
     } catch (e) {
         res.status(500).send()
     }
