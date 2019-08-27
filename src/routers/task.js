@@ -20,12 +20,34 @@ router.post('/tasks', auth, async (req, res) => {
     }
 })
 
+
+//GET /tasks?completed=true
+//GET /tasks?limit=10&skip=10
+//GET /tasks?sortBy=createdAt_desc
 router.get('/tasks', auth, async (req, res) => {
+    var ascending = ''//used later for sort command
     try {
+        
+        if(req.query.sortBy == null){
+            var field='createdAt'
+        } else {//no query string provided so dont try do things with it
+
+        //checks to see if desending has been specified and sets ascending to negative if so
+        const sortPatt = /(?<=_)[\w+.-]+/
+        if(sortPatt.exec(req.query.sortBy)[0] == 'desc'){
+            ascending = '-'
+        }
+
+        const fieldPatt = /\w+(?=.*_)/
+        field = fieldPatt.exec(req.query.sortBy)[0]
+
+        
+    }
         if(req.query.completed){
             const tasks = await Task.find({owner: req.user._id, completed: req.query.completed})
             .limit(parseInt(req.query.limit))
             .skip(parseInt(req.query.skip))
+            .sort(ascending+field)
             if(!tasks){
                 res.status(404).send()
             }
@@ -34,6 +56,7 @@ router.get('/tasks', auth, async (req, res) => {
             const tasks = await Task.find({owner: req.user._id})
             .limit(parseInt(req.query.limit))
             .skip(parseInt(req.query.skip))
+            .sort(ascending+field)
             if(!tasks){
                 res.status(404).send()
             }
@@ -44,6 +67,7 @@ router.get('/tasks', auth, async (req, res) => {
        
         
     } catch (e) {
+        console.log(e)
         res.status(500).send()
     }
 })
