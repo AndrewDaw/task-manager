@@ -26,6 +26,7 @@ router.post('/tasks', auth, async (req, res) => {
 //GET /tasks?sortBy=createdAt_desc
 router.get('/tasks', auth, async (req, res) => {
     var ascending = ''//used later for sort command
+    var completedReq
     try {
         
         if(req.query.sortBy == null){
@@ -43,26 +44,25 @@ router.get('/tasks', auth, async (req, res) => {
 
         
     }
+
+
         if(req.query.completed){
-            const tasks = await Task.find({owner: req.user._id, completed: req.query.completed})
+            var tasks = await Task.find({owner: req.user._id})
+            .where({completed: req.query.completed})
             .limit(parseInt(req.query.limit))
             .skip(parseInt(req.query.skip))
             .sort(ascending+field)
-            if(!tasks){
-                res.status(404).send()
-            }
-            res.send(tasks)
         }else{
-            const tasks = await Task.find({owner: req.user._id})
+            tasks = await Task.find({owner: req.user._id}) 
             .limit(parseInt(req.query.limit))
             .skip(parseInt(req.query.skip))
             .sort(ascending+field)
+        }
+
             if(!tasks){
                 res.status(404).send()
             }
             res.send(tasks)
-            
-        }
         
        
         

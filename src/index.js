@@ -8,14 +8,7 @@ const maintenance = false
 const app = express()
 const port = process.env.PORT || 3000
 
-// app.use( (req, res, next) => {
-//     const authenticated = true
-//     if (req.method === 'GET'){
-//         res.send('You need to be logged in')
-//     } else {
-//         next()
-//     }
-// } )
+
 
 app.use( (req, res, next) => {
     if (maintenance) {
@@ -35,6 +28,27 @@ app.listen(port, () => {
     console.log('sever is up on port '+ port)
 })
 
+const multer = require('multer')
+const upload = multer({
+    dest: 'images'
+})
+
+app.post('/uploads',upload.single('upload') ,(req, res) => {
+    res.send()
+})
+
+
+
+
+
+// app.use( (req, res, next) => {
+//     const authenticated = true
+//     if (req.method === 'GET'){
+//         res.send('You need to be logged in')
+//     } else {
+//         next()
+//     }
+// } )
 
 // const User = require('./models/user')
 // const main = async () => {
