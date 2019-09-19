@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Home</title>
+    {{!-- <link rel="icon" href="/image/weather-ico.png"> --}}
+    <link rel="stylesheet" href="/css/styles.css">
+
+</head>
+
+<body>
+    <div class="main-content">
+        {{>header}}
+        <p>Use this site for all your tasking needs!</p>
+
+
+        <form>
+            <input id='email' placeholder="email">
+        </form>
+        
+            <input id='password' placeholder="password">
+            <button>Log in / Register</button>
+        
+        <p id='m1'>PLEASE NOTE: This is an insecure website and whilst your passwords will be stored securely it is strongly reccomended you use a password that you dont use for other accounts!</p>
+        <p id='m2'>Also if you do use your real email you will be emailed something when you first log in and again if you close your account</p>
+        <p id='m3'></p>
+
+    </div>
+
+
+    {{>footer}}
+
+
+    <script src="/js/app.js"></script>
+</body>
+
+
+
+</html>
